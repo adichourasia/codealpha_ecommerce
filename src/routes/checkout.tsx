@@ -33,7 +33,7 @@ function CheckoutPage() {
     );
   }
 
-  const shipping = totalPrice >= 50 ? 0 : 5.99;
+  const shipping = totalPrice >= 4000 ? 0 : 499;
   const total = totalPrice + shipping;
 
   const validate = () => {
