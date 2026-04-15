@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCart } from "@/context/CartContext";
+import { formatPrice } from "@/lib/currency";
 
 export const Route = createFileRoute("/cart")({
   head: () => ({

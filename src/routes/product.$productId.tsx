@@ -3,6 +3,7 @@ import { useState } from "react";
 import { getProductById, getProductsByCategory, type Product } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 import { ProductCard } from "@/components/ProductCard";
+import { formatPrice } from "@/lib/currency";
 
 export const Route = createFileRoute("/product/$productId")({
   loader: ({ params }) => {
