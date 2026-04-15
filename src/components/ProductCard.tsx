@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useCart } from "@/context/CartContext";
+import { formatPrice } from "@/lib/currency";
 import type { Product } from "@/data/products";
 
 export function ProductCard({ product }: { product: Product }) {
@@ -61,9 +62,9 @@ export function ProductCard({ product }: { product: Product }) {
         {/* Price + Add to cart */}
         <div className="flex items-center justify-between mt-3">
           <div className="flex items-center gap-2">
-            <span className="text-lg font-bold text-foreground">${product.price.toFixed(2)}</span>
+            <span className="text-lg font-bold text-foreground">{formatPrice(product.price)}</span>
             {product.originalPrice && (
-              <span className="text-xs text-muted-foreground line-through">${product.originalPrice.toFixed(2)}</span>
+              <span className="text-xs text-muted-foreground line-through">{formatPrice(product.originalPrice)}</span>
             )}
           </div>
           <button

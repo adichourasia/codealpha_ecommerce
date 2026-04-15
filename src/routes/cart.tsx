@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCart } from "@/context/CartContext";
+import { formatPrice } from "@/lib/currency";
 
 export const Route = createFileRoute("/cart")({
   head: () => ({
@@ -63,7 +64,7 @@ function CartPage() {
                   </h3>
                 </Link>
                 <p className="text-xs text-muted-foreground capitalize mt-0.5">{item.product.category}</p>
-                <p className="text-sm font-bold text-foreground mt-2">${item.product.price.toFixed(2)}</p>
+                <p className="text-sm font-bold text-foreground mt-2">{formatPrice(item.product.price)}</p>
 
                 <div className="flex items-center justify-between mt-3">
                   <div className="flex items-center border border-border rounded-lg overflow-hidden">
@@ -72,7 +73,7 @@ function CartPage() {
                     <button onClick={() => updateQuantity(item.product.id, item.quantity + 1)} className="px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted transition-colors">+</button>
                   </div>
                   <div className="flex items-center gap-4">
-                    <span className="text-sm font-semibold text-foreground">${(item.product.price * item.quantity).toFixed(2)}</span>
+                    <span className="text-sm font-semibold text-foreground">{formatPrice(item.product.price * item.quantity)}</span>
                     <button
                       onClick={() => removeFromCart(item.product.id)}
                       className="text-muted-foreground hover:text-destructive transition-colors"
@@ -96,21 +97,21 @@ function CartPage() {
             <div className="space-y-3 text-sm">
               <div className="flex justify-between text-muted-foreground">
                 <span>Subtotal</span>
-                <span>${totalPrice.toFixed(2)}</span>
+                <span>{formatPrice(totalPrice)}</span>
               </div>
               <div className="flex justify-between text-muted-foreground">
                 <span>Shipping</span>
-                <span className={totalPrice >= 50 ? "text-success font-medium" : ""}>
-                  {totalPrice >= 50 ? "Free" : "$5.99"}
+                <span className={totalPrice >= 4000 ? "text-success font-medium" : ""}>
+                  {totalPrice >= 4000 ? "Free" : "₹499"}
                 </span>
               </div>
               <div className="border-t border-border pt-3 flex justify-between font-semibold text-foreground text-base">
                 <span>Total</span>
-                <span>${(totalPrice + (totalPrice >= 50 ? 0 : 5.99)).toFixed(2)}</span>
+                <span>{formatPrice(totalPrice + (totalPrice >= 4000 ? 0 : 499))}</span>
               </div>
             </div>
-            {totalPrice < 50 && (
-              <p className="mt-3 text-xs text-muted-foreground">Add ${(50 - totalPrice).toFixed(2)} more for free shipping!</p>
+            {totalPrice < 4000 && (
+              <p className="mt-3 text-xs text-muted-foreground">Add {formatPrice(4000 - totalPrice)} more for free shipping!</p>
             )}
             <Link
               to="/checkout"

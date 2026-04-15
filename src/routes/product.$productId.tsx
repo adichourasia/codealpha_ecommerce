@@ -3,6 +3,7 @@ import { useState } from "react";
 import { getProductById, getProductsByCategory, type Product } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 import { ProductCard } from "@/components/ProductCard";
+import { formatPrice } from "@/lib/currency";
 
 export const Route = createFileRoute("/product/$productId")({
   loader: ({ params }) => {
@@ -87,12 +88,12 @@ function ProductDetailPage() {
 
           {/* Price */}
           <div className="flex items-center gap-3 mt-5">
-            <span className="text-3xl font-bold text-foreground">${product.price.toFixed(2)}</span>
+            <span className="text-3xl font-bold text-foreground">{formatPrice(product.price)}</span>
             {product.originalPrice && (
               <>
-                <span className="text-lg text-muted-foreground line-through">${product.originalPrice.toFixed(2)}</span>
+                <span className="text-lg text-muted-foreground line-through">{formatPrice(product.originalPrice)}</span>
                 <span className="px-2 py-0.5 rounded-full bg-badge-sale/10 text-badge-sale text-xs font-semibold">
-                  Save ${(product.originalPrice - product.price).toFixed(2)}
+                  Save {formatPrice(product.originalPrice - product.price)}
                 </span>
               </>
             )}
