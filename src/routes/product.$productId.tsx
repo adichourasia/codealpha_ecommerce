@@ -170,7 +170,7 @@ function ProductDetailPage() {
         <section className="mt-20">
           <h2 className="text-2xl font-bold text-foreground mb-8">You May Also Like</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {related.map((p) => (
+            {related.map((p: Product) => (
               <ProductCard key={p.id} product={p} />
             ))}
           </div>
