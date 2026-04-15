@@ -29,7 +29,7 @@ function HomePage() {
               <span className="text-primary">Live Better</span>
             </h1>
             <p className="mt-4 text-lg text-primary-foreground/80 leading-relaxed">
-              Discover curated products that blend quality, style, and value. Free shipping on orders over $50.
+              Discover curated products that blend quality, style, and value. Free shipping on orders over ₹4,000.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
