@@ -120,22 +120,22 @@ function CheckoutPage() {
                       <p className="text-xs font-medium text-foreground line-clamp-1">{item.product.name}</p>
                       <p className="text-xs text-muted-foreground">Qty: {item.quantity}</p>
                     </div>
-                    <p className="text-xs font-semibold text-foreground">${(item.product.price * item.quantity).toFixed(2)}</p>
+                    <p className="text-xs font-semibold text-foreground">{formatPrice(item.product.price * item.quantity)}</p>
                   </div>
                 ))}
               </div>
               <div className="border-t border-border pt-3 space-y-2 text-sm">
                 <div className="flex justify-between text-muted-foreground">
                   <span>Subtotal</span>
-                  <span>${totalPrice.toFixed(2)}</span>
+                  <span>{formatPrice(totalPrice)}</span>
                 </div>
                 <div className="flex justify-between text-muted-foreground">
                   <span>Shipping</span>
-                  <span>{shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`}</span>
+                  <span>{shipping === 0 ? "Free" : formatPrice(shipping)}</span>
                 </div>
                 <div className="border-t border-border pt-2 flex justify-between font-semibold text-foreground text-base">
                   <span>Total</span>
-                  <span>${total.toFixed(2)}</span>
+                  <span>{formatPrice(total)}</span>
                 </div>
               </div>
               <button
@@ -152,7 +152,7 @@ function CheckoutPage() {
                     Processing...
                   </span>
                 ) : (
-                  `Place Order — $${total.toFixed(2)}`
+                  `Place Order — ${formatPrice(total)}`
                 )}
               </button>
             </div>
