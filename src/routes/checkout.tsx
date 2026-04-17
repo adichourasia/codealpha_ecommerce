@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useCart } from "@/context/CartContext";
+import { createOrder } from "@/lib/api";
 import { formatPrice } from "@/lib/currency";
 
 export const Route = createFileRoute("/checkout")({
@@ -18,6 +19,7 @@ function CheckoutPage() {
   const navigate = useNavigate();
   const [form, setForm] = useState({ name: "", phone: "", address: "", city: "", pincode: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitError, setSubmitError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   if (items.length === 0) {
@@ -47,14 +49,48 @@ function CheckoutPage() {
     return Object.keys(e).length === 0;
   };
 
-  const handleSubmit = (ev: React.FormEvent) => {
+  const handleSubmit = async (ev: React.FormEvent) => {
     ev.preventDefault();
+    setSubmitError("");
     if (!validate()) return;
     setSubmitting(true);
-    setTimeout(() => {
+
+    const currentUser = JSON.parse(localStorage.getItem("snapcart_currentUser") || "null") as
+      | { name?: string; email?: string }
+      | null;
+
+    if (!currentUser?.name || !currentUser?.email) {
+      setSubmitting(false);
+      navigate({ to: "/login" });
+      return;
+    }
+
+    try {
+      const order = await createOrder({
+        user: {
+          name: currentUser.name,
+          email: currentUser.email,
+        },
+        items: items.map((item) => ({
+          productId: item.product.id,
+          name: item.product.name,
+          price: item.product.price,
+          quantity: item.quantity,
+          image: item.product.image,
+        })),
+        shippingAddress: form,
+        shipping,
+        subtotal: totalPrice,
+        total,
+      });
+
       clearCart();
-      navigate({ to: "/order-confirmation" });
-    }, 1500);
+      navigate({ to: "/order-confirmation", search: { orderNo: order.orderNumber } });
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : "Unable to place order");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const updateField = (field: string, value: string) => {
@@ -80,6 +116,11 @@ function CheckoutPage() {
           <div className="lg:col-span-2">
             <div className="rounded-2xl bg-card border border-border p-6" style={{ boxShadow: "var(--shadow-card)" }}>
               <h2 className="text-lg font-semibold text-foreground mb-5">Shipping Information</h2>
+              {submitError && (
+                <div className="mb-4 rounded-lg bg-destructive/10 p-3 text-sm text-destructive">
+                  {submitError}
+                </div>
+              )}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
                   { name: "name", label: "Full Name", placeholder: "John Doe", span: true },

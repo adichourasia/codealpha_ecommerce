@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { ProductCard } from "@/components/ProductCard";
-import { products, categories } from "@/data/products";
+import type { Product } from "@/data/products";
+import { fetchProducts } from "@/lib/api";
 
 interface ShopSearch {
   category?: string;
@@ -28,13 +29,54 @@ export const Route = createFileRoute("/shop")({
 
 function ShopPage() {
   const { category, q, sort } = Route.useSearch();
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [search, setSearch] = useState(q || "");
   const [selectedCategory, setSelectedCategory] = useState(category || "");
   const [selectedSort, setSelectedSort] = useState(sort || "");
   const navigate = Route.useNavigate();
 
+  useEffect(() => {
+    let active = true;
+
+    const loadProducts = async () => {
+      try {
+        const result = await fetchProducts();
+        if (!active) return;
+        setAllProducts(result);
+      } catch (err) {
+        if (!active) return;
+        setError(err instanceof Error ? err.message : "Unable to load products");
+      } finally {
+        if (active) setLoading(false);
+      }
+    };
+
+    loadProducts();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const categories = useMemo(() => {
+    const categoryMeta = [
+      { id: "electronics", name: "Electronics", icon: "💻" },
+      { id: "fashion", name: "Fashion", icon: "👕" },
+      { id: "accessories", name: "Accessories", icon: "⌚" },
+      { id: "home", name: "Home & Living", icon: "🏠" },
+    ];
+
+    return categoryMeta
+      .map((meta) => ({
+        ...meta,
+        count: allProducts.filter((product) => product.category === meta.id).length,
+      }))
+      .filter((categoryInfo) => categoryInfo.count > 0);
+  }, [allProducts]);
+
   const filtered = useMemo(() => {
-    let result = [...products];
+    let result = [...allProducts];
     if (selectedCategory) result = result.filter((p) => p.category === selectedCategory);
     if (search) {
       const s = search.toLowerCase();
@@ -47,7 +89,7 @@ function ShopPage() {
     else if (selectedSort === "newest") result.sort((a, b) => (a.badge === "new" ? -1 : 1));
     else if (selectedSort === "rating") result.sort((a, b) => b.rating - a.rating);
     return result;
-  }, [selectedCategory, search, selectedSort]);
+  }, [allProducts, selectedCategory, search, selectedSort]);
 
   const handleCategoryChange = (cat: string) => {
     setSelectedCategory(cat);
@@ -78,6 +120,7 @@ function ShopPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-border bg-card text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
+            suppressHydrationWarning
           />
         </div>
 
@@ -86,6 +129,7 @@ function ShopPage() {
           value={selectedCategory}
           onChange={(e) => handleCategoryChange(e.target.value)}
           className="px-4 py-2.5 rounded-xl border border-border bg-card text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
+          suppressHydrationWarning
         >
           <option value="">All Categories</option>
           {categories.map((cat) => (
@@ -98,6 +142,7 @@ function ShopPage() {
           value={selectedSort}
           onChange={(e) => setSelectedSort(e.target.value)}
           className="px-4 py-2.5 rounded-xl border border-border bg-card text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
+          suppressHydrationWarning
         >
           <option value="">Sort by</option>
           <option value="price-low">Price: Low to High</option>
@@ -114,6 +159,7 @@ function ShopPage() {
           className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
             !selectedCategory ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:bg-muted/80"
           }`}
+          suppressHydrationWarning
         >
           All
         </button>
@@ -124,11 +170,20 @@ function ShopPage() {
             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
               selectedCategory === cat.id ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:bg-muted/80"
             }`}
+            suppressHydrationWarning
           >
             {cat.icon} {cat.name}
           </button>
         ))}
       </div>
+
+      {loading && (
+        <div className="rounded-xl border border-border bg-card p-4 text-sm text-muted-foreground">Loading products...</div>
+      )}
+
+      {!loading && error && (
+        <div className="rounded-xl border border-destructive/40 bg-destructive/10 p-4 text-sm text-destructive">{error}</div>
+      )}
 
       {/* Results count */}
       <p className="text-sm text-muted-foreground mb-6">{filtered.length} product{filtered.length !== 1 ? "s" : ""} found</p>
@@ -148,6 +203,7 @@ function ShopPage() {
           <button
             onClick={() => { setSearch(""); handleCategoryChange(""); setSelectedSort(""); }}
             className="mt-4 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium btn-primary-hover"
+            suppressHydrationWarning
           >
             Clear Filters
           </button>

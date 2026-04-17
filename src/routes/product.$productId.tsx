@@ -1,23 +1,18 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { useState } from "react";
-import { getProductById, getProductsByCategory, type Product } from "@/data/products";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import type { Product } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 import { ProductCard } from "@/components/ProductCard";
+import { fetchProductById, fetchProducts } from "@/lib/api";
 import { formatPrice } from "@/lib/currency";
 
 export const Route = createFileRoute("/product/$productId")({
-  loader: ({ params }) => {
-    const product = getProductById(params.productId);
-    if (!product) throw notFound();
-    const related = getProductsByCategory(product.category).filter((p) => p.id !== product.id).slice(0, 4);
-    return { product, related };
-  },
-  head: ({ loaderData }) => ({
+  head: () => ({
     meta: [
-      { title: `${loaderData?.product.name} — SnapCart` },
-      { name: "description", content: loaderData?.product.description || "" },
-      { property: "og:title", content: `${loaderData?.product.name} — SnapCart` },
-      { property: "og:description", content: loaderData?.product.shortDescription || "" },
+      { title: "Product Details — SnapCart" },
+      { name: "description", content: "View product details and related picks on SnapCart." },
+      { property: "og:title", content: "Product Details — SnapCart" },
+      { property: "og:description", content: "View product details and related picks on SnapCart." },
     ],
   }),
   component: ProductDetailPage,
@@ -33,10 +28,70 @@ export const Route = createFileRoute("/product/$productId")({
 });
 
 function ProductDetailPage() {
-  const { product, related } = Route.useLoaderData();
+  const { productId } = Route.useParams();
   const { addToCart } = useCart();
+  const [product, setProduct] = useState<Product | null>(null);
+  const [related, setRelated] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    setLoading(true);
+    setError("");
+
+    const loadProduct = async () => {
+      try {
+        const [selectedProduct, allProducts] = await Promise.all([
+          fetchProductById(productId),
+          fetchProducts(),
+        ]);
+
+        if (!active) return;
+
+        setProduct(selectedProduct);
+        setRelated(
+          allProducts
+            .filter((item) => item.category === selectedProduct.category && item.id !== selectedProduct.id)
+            .slice(0, 4)
+        );
+      } catch (err) {
+        if (!active) return;
+        setError(err instanceof Error ? err.message : "Unable to load product");
+      } finally {
+        if (active) setLoading(false);
+      }
+    };
+
+    loadProduct();
+
+    return () => {
+      active = false;
+    };
+  }, [productId]);
+
+  if (loading) {
+    return (
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 text-center">
+        <p className="text-muted-foreground">Loading product...</p>
+      </div>
+    );
+  }
+
+  if (error || !product) {
+    return (
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <div className="text-center">
+          <p className="text-5xl mb-4">📦</p>
+          <h2 className="text-xl font-bold text-foreground">Product not found</h2>
+          <p className="mt-2 text-sm text-muted-foreground">{error || "The requested product is unavailable."}</p>
+          <Link to="/shop" className="mt-4 inline-block text-sm text-primary hover:underline">Back to shop</Link>
+        </div>
+      </div>
+    );
+  }
 
   const handleAddToCart = () => {
     addToCart(product, quantity);

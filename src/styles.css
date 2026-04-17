@@ -110,6 +110,60 @@
   --shadow-navbar: 0 1px 3px 0 oklch(0 0 0 / 0.05);
 }
 
+/* Dark Theme */
+.dark {
+  --background: oklch(0.15 0.02 250);
+  --foreground: oklch(0.95 0.01 250);
+  --card: oklch(0.22 0.01 250);
+  --card-foreground: oklch(0.95 0.01 250);
+  --popover: oklch(0.22 0.01 250);
+  --popover-foreground: oklch(0.95 0.01 250);
+
+  /* Orange primary - adjusted for dark */
+  --primary: oklch(0.705 0.191 47);
+  --primary-foreground: oklch(1 0 0);
+  --primary-hover: oklch(0.755 0.191 47);
+  --primary-light: oklch(0.35 0.05 47);
+
+  /* Blue secondary - adjusted for dark */
+  --secondary: oklch(0.64 0.18 250);
+  --secondary-foreground: oklch(1 0 0);
+  --muted: oklch(0.3 0.01 250);
+  --muted-foreground: oklch(0.7 0.03 250);
+  --accent: oklch(0.35 0.04 250);
+  --accent-foreground: oklch(0.85 0.12 250);
+  --destructive: oklch(0.677 0.245 27.325);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.3 0.01 250);
+  --input: oklch(0.3 0.01 250);
+  --ring: oklch(0.64 0.18 250);
+
+  --success: oklch(0.596 0.145 163);
+  --success-foreground: oklch(1 0 0);
+  --badge-new: oklch(0.64 0.18 250);
+  --badge-sale: oklch(0.705 0.191 47);
+  --chart-1: oklch(0.596 0.145 163);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+
+  --sidebar: oklch(0.2 0.002 110);
+  --sidebar-foreground: oklch(0.9 0.015 260);
+  --sidebar-primary: oklch(0.596 0.145 163);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.3 0.005 260);
+  --sidebar-accent-foreground: oklch(0.85 0.015 260);
+  --sidebar-border: oklch(0.3 0.005 260);
+  --sidebar-ring: oklch(0.596 0.145 163);
+
+  /* Dark shadows */
+  --shadow-card: 0 1px 3px 0 oklch(0 0 0 / 0.3), 0 1px 2px -1px oklch(0 0 0 / 0.3);
+  --shadow-card-hover: 0 10px 25px -5px oklch(0 0 0 / 0.5), 0 8px 10px -6px oklch(0 0 0 / 0.3);
+  --shadow-elevated: 0 20px 40px -12px oklch(0 0 0 / 0.6);
+  --shadow-navbar: 0 1px 3px 0 oklch(0 0 0 / 0.3);
+}
+
 @layer base {
   * {
     border-color: var(--color-border);
@@ -188,4 +242,17 @@
     background-color: var(--primary-hover);
     transform: translateY(-1px);
   }
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
 }

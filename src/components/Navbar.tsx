@@ -1,11 +1,43 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { MoonStar, SunMedium } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { useTheme } from "@/context/ThemeContext";
+import logoUrl from "../../logo.png";
 
 export function Navbar() {
   const { totalItems, isAnimating } = useCart();
+  const { theme, toggleTheme } = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState<{ name: string; email: string } | null>(null);
   const location = useLocation();
+  const isDark = theme === "dark";
+
+  useEffect(() => {
+    const syncUser = () => {
+      const parsed = JSON.parse(localStorage.getItem("snapcart_currentUser") || "null") as
+        | { name?: string; email?: string }
+        | null;
+      if (parsed?.name && parsed?.email) {
+        setCurrentUser({ name: parsed.name, email: parsed.email });
+      } else {
+        setCurrentUser(null);
+      }
+    };
+
+    syncUser();
+    window.addEventListener("storage", syncUser);
+
+    return () => {
+      window.removeEventListener("storage", syncUser);
+    };
+  }, [location.pathname]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("snapcart_currentUser");
+    setCurrentUser(null);
+    setMobileOpen(false);
+  };
 
   const navLinks = [
     { to: "/" as const, label: "Home" },
@@ -22,10 +54,8 @@ export function Navbar() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
-              <svg className="h-5 w-5 text-primary-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
+            <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg bg-primary/10 ring-1 ring-border/60">
+              <img src={logoUrl} alt="SnapCart logo" className="h-full w-full object-contain p-1" />
             </div>
             <span className="text-xl font-bold tracking-tight text-foreground">SnapCart</span>
           </Link>
@@ -49,6 +79,16 @@ export function Navbar() {
 
           {/* Right side */}
           <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="inline-flex h-10 items-center gap-2 rounded-lg border border-border bg-card px-3 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+              aria-label={`Switch to ${isDark ? "light" : "dark"} theme`}
+            >
+              {isDark ? <SunMedium className="h-4 w-4" /> : <MoonStar className="h-4 w-4" />}
+              <span className="hidden sm:inline">{isDark ? "Light" : "Dark"}</span>
+            </button>
+
             {/* Cart icon */}
             <Link
               to="/cart"
@@ -69,12 +109,21 @@ export function Navbar() {
             </Link>
 
             {/* Login */}
-            <Link
-              to="/login"
-              className="hidden sm:inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground btn-primary-hover"
-            >
-              Sign In
-            </Link>
+            {currentUser ? (
+              <button
+                onClick={handleLogout}
+                className="hidden sm:inline-flex items-center justify-center rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors"
+              >
+                Sign Out
+              </button>
+            ) : (
+              <Link
+                to="/login"
+                className="hidden sm:inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground btn-primary-hover"
+              >
+                Sign In
+              </Link>
+            )}
 
             {/* Mobile menu button */}
             <button
@@ -112,13 +161,31 @@ export function Navbar() {
                   {link.label}
                 </Link>
               ))}
-              <Link
-                to="/login"
-                onClick={() => setMobileOpen(false)}
-                className="mt-2 inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground"
+              {currentUser ? (
+                <button
+                  onClick={handleLogout}
+                  className="mt-2 inline-flex items-center justify-center rounded-lg border border-border px-4 py-2.5 text-sm font-medium text-foreground hover:bg-muted transition-colors"
+                >
+                  Sign Out
+                </button>
+              ) : (
+                <Link
+                  to="/login"
+                  onClick={() => setMobileOpen(false)}
+                  className="mt-2 inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground"
+                >
+                  Sign In
+                </Link>
+              )}
+              <button
+                type="button"
+                onClick={toggleTheme}
+                className="mt-2 inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-medium text-foreground hover:bg-muted transition-colors"
+                aria-label={`Switch to ${isDark ? "light" : "dark"} theme`}
               >
-                Sign In
-              </Link>
+                {isDark ? <SunMedium className="h-4 w-4" /> : <MoonStar className="h-4 w-4" />}
+                {isDark ? "Light mode" : "Dark mode"}
+              </button>
             </nav>
           </div>
         )}
