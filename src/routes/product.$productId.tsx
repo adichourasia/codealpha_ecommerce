@@ -111,7 +111,7 @@ function ProductDetailPage() {
       </div>
 
       {/* Product detail */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-16">
         {/* Image */}
         <div className="relative rounded-2xl overflow-hidden bg-muted aspect-square" style={{ boxShadow: "var(--shadow-elevated)" }}>
           <img src={product.image} alt={product.name} className="w-full h-full object-cover" width={800} height={800} />
@@ -127,7 +127,7 @@ function ProductDetailPage() {
         {/* Info */}
         <div className="flex flex-col justify-center animate-slide-in-right">
           <p className="text-sm text-primary font-medium capitalize mb-2">{product.category}</p>
-          <h1 className="text-3xl sm:text-4xl font-bold text-foreground leading-tight">{product.name}</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold text-foreground leading-tight text-balance">{product.name}</h1>
 
           {/* Rating */}
           <div className="flex items-center gap-2 mt-3">
@@ -166,8 +166,8 @@ function ProductDetailPage() {
           </div>
 
           {/* Quantity + Add to cart */}
-          <div className="mt-8 flex flex-wrap items-center gap-4">
-            <div className="flex items-center border border-border rounded-xl overflow-hidden">
+          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center">
+            <div className="flex items-center self-start border border-border rounded-xl overflow-hidden">
               <button
                 onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                 className="px-4 py-3 text-muted-foreground hover:bg-muted transition-colors"
@@ -185,7 +185,7 @@ function ProductDetailPage() {
             <button
               onClick={handleAddToCart}
               disabled={product.stock === 0}
-              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3 text-sm font-semibold text-primary-foreground btn-primary-hover disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3 text-sm font-semibold text-primary-foreground btn-primary-hover disabled:opacity-50 disabled:cursor-not-allowed sm:w-auto sm:flex-none"
             >
               {added ? (
                 <>
@@ -206,15 +206,15 @@ function ProductDetailPage() {
           </div>
 
           {/* Features */}
-          <div className="mt-8 grid grid-cols-3 gap-4">
+          <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
             {[
               { icon: "🚚", label: "Free Shipping" },
               { icon: "🔄", label: "Easy Returns" },
               { icon: "🛡️", label: "2yr Warranty" },
             ].map((f) => (
-              <div key={f.label} className="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-muted text-center">
+              <div key={f.label} className="flex flex-row items-center justify-center gap-2 rounded-xl bg-muted p-3 text-center sm:flex-col sm:gap-1.5">
                 <span className="text-lg">{f.icon}</span>
-                <span className="text-[11px] font-medium text-muted-foreground">{f.label}</span>
+                <span className="text-xs font-medium text-muted-foreground sm:text-[11px]">{f.label}</span>
               </div>
             ))}
           </div>
@@ -225,7 +225,7 @@ function ProductDetailPage() {
       {related.length > 0 && (
         <section className="mt-20">
           <h2 className="text-2xl font-bold text-foreground mb-8">You May Also Like</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {related.map((p: Product) => (
               <ProductCard key={p.id} product={p} />
             ))}

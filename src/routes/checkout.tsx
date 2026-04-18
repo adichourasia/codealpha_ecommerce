@@ -111,7 +111,7 @@ function CheckoutPage() {
       <h1 className="text-3xl font-bold text-foreground mb-8">Checkout</h1>
 
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           {/* Shipping form */}
           <div className="lg:col-span-2">
             <div className="rounded-2xl bg-card border border-border p-6" style={{ boxShadow: "var(--shadow-card)" }}>
@@ -121,7 +121,7 @@ function CheckoutPage() {
                   {submitError}
                 </div>
               )}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {[
                   { name: "name", label: "Full Name", placeholder: "John Doe", span: true },
                   { name: "phone", label: "Phone Number", placeholder: "+1 (555) 123-4567" },
@@ -151,7 +151,7 @@ function CheckoutPage() {
 
           {/* Summary */}
           <div className="lg:col-span-1">
-            <div className="sticky top-24 rounded-2xl bg-card border border-border p-6" style={{ boxShadow: "var(--shadow-card)" }}>
+            <div className="rounded-2xl bg-card border border-border p-6 lg:sticky lg:top-24" style={{ boxShadow: "var(--shadow-card)" }}>
               <h2 className="text-lg font-semibold text-foreground mb-5">Order Summary</h2>
               <div className="space-y-3 mb-5">
                 {items.map((item) => (

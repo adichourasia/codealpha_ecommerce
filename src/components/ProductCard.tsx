@@ -32,7 +32,7 @@ export function ProductCard({ product }: { product: Product }) {
       </Link>
 
       {/* Content */}
-      <div className="p-4">
+      <div className="p-4 sm:p-5">
         <Link to="/product/$productId" params={{ productId: product.id }}>
           <p className="text-xs text-muted-foreground capitalize mb-1">{product.category}</p>
           <h3 className="text-sm font-semibold text-foreground leading-snug line-clamp-2 hover:text-primary transition-colors">
@@ -60,7 +60,7 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
 
         {/* Price + Add to cart */}
-        <div className="flex items-center justify-between mt-3">
+        <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2">
             <span className="text-lg font-bold text-foreground">{formatPrice(product.price)}</span>
             {product.originalPrice && (
@@ -69,7 +69,7 @@ export function ProductCard({ product }: { product: Product }) {
           </div>
           <button
             onClick={() => addToCart(product)}
-            className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground btn-primary-hover"
+            className="flex h-10 w-full items-center justify-center rounded-xl bg-primary text-primary-foreground btn-primary-hover sm:w-10"
             aria-label={`Add ${product.name} to cart`}
             suppressHydrationWarning
           >

@@ -43,11 +43,11 @@ function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-[70vh] items-center justify-center px-4 py-12">
+    <div className="flex min-h-[70vh] items-start justify-center px-4 py-8 sm:items-center sm:py-12">
       <div className="w-full max-w-sm animate-scale-in">
-        <div className="rounded-2xl bg-card border border-border p-8" style={{ boxShadow: "var(--shadow-elevated)" }}>
+        <div className="rounded-2xl bg-card border border-border p-6 sm:p-8" style={{ boxShadow: "var(--shadow-elevated)" }}>
           <div className="text-center mb-8">
-            <h2 className="text-4xl font-black mb-4" style={{
+            <h2 className="mb-4 text-3xl font-black sm:text-4xl" style={{
               background: "linear-gradient(90deg, var(--primary), var(--primary), var(--secondary), var(--primary), var(--primary))",
               backgroundSize: "200% 200%",
               WebkitBackgroundClip: "text",

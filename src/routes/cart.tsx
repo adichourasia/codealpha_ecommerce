@@ -38,23 +38,23 @@ function CartPage() {
 
       <h1 className="text-3xl font-bold text-foreground mb-8">Shopping Cart ({totalItems} item{totalItems !== 1 ? "s" : ""})</h1>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         {/* Cart items */}
         <div className="lg:col-span-2 space-y-4">
           {items.map((item) => (
             <div
               key={item.product.id}
-              className="flex gap-4 p-4 rounded-2xl bg-card border border-border"
+              className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-4 sm:flex-row"
               style={{ boxShadow: "var(--shadow-card)" }}
             >
-              <Link to="/product/$productId" params={{ productId: item.product.id }} className="flex-shrink-0">
+              <Link to="/product/$productId" params={{ productId: item.product.id }} className="self-start flex-shrink-0">
                 <img
                   src={item.product.image}
                   alt={item.product.name}
                   loading="lazy"
                   width={100}
                   height={100}
-                  className="h-24 w-24 rounded-xl object-cover"
+                  className="h-28 w-full rounded-xl object-cover sm:h-24 sm:w-24"
                 />
               </Link>
               <div className="flex-1 min-w-0">
@@ -66,13 +66,13 @@ function CartPage() {
                 <p className="text-xs text-muted-foreground capitalize mt-0.5">{item.product.category}</p>
                 <p className="text-sm font-bold text-foreground mt-2">{formatPrice(item.product.price)}</p>
 
-                <div className="flex items-center justify-between mt-3">
-                  <div className="flex items-center border border-border rounded-lg overflow-hidden">
+                <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex items-center self-start border border-border rounded-lg overflow-hidden">
                     <button onClick={() => updateQuantity(item.product.id, item.quantity - 1)} className="px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted transition-colors">−</button>
                     <span className="px-3 py-1.5 text-sm font-medium text-foreground">{item.quantity}</span>
                     <button onClick={() => updateQuantity(item.product.id, item.quantity + 1)} className="px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted transition-colors">+</button>
                   </div>
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center justify-between gap-4 sm:justify-start">
                     <span className="text-sm font-semibold text-foreground">{formatPrice(item.product.price * item.quantity)}</span>
                     <button
                       onClick={() => removeFromCart(item.product.id)}
@@ -92,7 +92,7 @@ function CartPage() {
 
         {/* Order summary */}
         <div className="lg:col-span-1">
-          <div className="sticky top-24 rounded-2xl bg-card border border-border p-6" style={{ boxShadow: "var(--shadow-card)" }}>
+          <div className="rounded-2xl bg-card border border-border p-6 lg:sticky lg:top-24" style={{ boxShadow: "var(--shadow-card)" }}>
             <h2 className="text-lg font-semibold text-foreground mb-5">Order Summary</h2>
             <div className="space-y-3 text-sm">
               <div className="flex justify-between text-muted-foreground">
