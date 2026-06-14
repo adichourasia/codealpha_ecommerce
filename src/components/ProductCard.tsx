@@ -16,6 +16,11 @@ export function ProductCard({ product }: { product: Product }) {
           loading="lazy"
           width={600}
           height={600}
+          onError={(event) => {
+            const target = event.currentTarget;
+            target.onerror = null;
+            target.src = "/logo.png";
+          }}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
         {product.badge && (
@@ -32,7 +37,7 @@ export function ProductCard({ product }: { product: Product }) {
       </Link>
 
       {/* Content */}
-      <div className="p-4 sm:p-5">
+      <div className="p-3.5 sm:p-5">
         <Link to="/product/$productId" params={{ productId: product.id }}>
           <p className="text-xs text-muted-foreground capitalize mb-1">{product.category}</p>
           <h3 className="text-sm font-semibold text-foreground leading-snug line-clamp-2 hover:text-primary transition-colors">
@@ -60,7 +65,7 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
 
         {/* Price + Add to cart */}
-        <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-3 flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
           <div className="flex items-center gap-2">
             <span className="text-lg font-bold text-foreground">{formatPrice(product.price)}</span>
             {product.originalPrice && (
@@ -69,13 +74,14 @@ export function ProductCard({ product }: { product: Product }) {
           </div>
           <button
             onClick={() => addToCart(product)}
-            className="flex h-10 w-full items-center justify-center rounded-xl bg-primary text-primary-foreground btn-primary-hover sm:w-10"
+            className="flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground btn-primary-hover sm:w-10 sm:gap-0"
             aria-label={`Add ${product.name} to cart`}
             suppressHydrationWarning
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
             </svg>
+            <span className="text-xs font-semibold sm:hidden">Add to cart</span>
           </button>
         </div>
       </div>

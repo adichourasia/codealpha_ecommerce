@@ -1,0 +1,25 @@
+{
+  "name": "SnapCart",
+  "short_name": "SnapCart",
+  "description": "Premium online store for electronics, fashion, accessories, and more.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f8f8f7",
+  "theme_color": "#ef8f2f",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

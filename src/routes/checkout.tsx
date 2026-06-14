@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { createOrder } from "@/lib/api";
@@ -16,7 +16,7 @@ export const Route = createFileRoute("/checkout")({
 
 function CheckoutPage() {
   const { items, totalPrice, clearCart } = useCart();
-  const navigate = useNavigate();
+  const navigate = Route.useNavigate();
   const [form, setForm] = useState({ name: "", phone: "", address: "", city: "", pincode: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitError, setSubmitError] = useState("");

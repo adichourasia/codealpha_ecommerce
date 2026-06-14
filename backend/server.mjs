@@ -194,7 +194,7 @@ app.get("/api/orders", async (req, res) => {
 });
 
 initDb().then(() => {
-  app.listen(port, () => {
-    console.log(`SnapCart backend running on http://localhost:${port}`);
+  app.listen(port, "0.0.0.0", () => {
+    console.log(`SnapCart backend running on http://localhost:${port} (LAN-enabled on port ${port})`);
   });
 });

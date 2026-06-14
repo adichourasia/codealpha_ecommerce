@@ -47,7 +47,10 @@ function ShopPage() {
         setAllProducts(result);
       } catch (err) {
         if (!active) return;
-        setError(err instanceof Error ? err.message : "Unable to load products");
+        // Keep shop usable on mobile/network-constrained sessions.
+        const localProducts = (await import("@/data/products")).products;
+        setAllProducts(localProducts);
+        setError(err instanceof Error ? `${err.message} Showing cached catalog.` : "Unable to load products. Showing cached catalog.");
       } finally {
         if (active) setLoading(false);
       }
@@ -97,7 +100,7 @@ function ShopPage() {
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
         <Link to="/" className="hover:text-primary transition-colors">Home</Link>
@@ -105,10 +108,10 @@ function ShopPage() {
         <span className="text-foreground font-medium">Shop</span>
       </div>
 
-      <h1 className="text-3xl font-bold text-foreground mb-8">All Products</h1>
+      <h1 className="mb-6 text-2xl font-bold text-foreground sm:mb-8 sm:text-3xl">All Products</h1>
 
       {/* Filters */}
-      <div className="flex flex-col gap-4 mb-8 sm:flex-row">
+      <div className="mb-6 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:gap-4">
         {/* Search */}
         <div className="relative w-full flex-1 min-w-0 max-w-md">
           <svg className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -153,10 +156,10 @@ function ShopPage() {
       </div>
 
       {/* Category pills */}
-      <div className="flex flex-wrap gap-2 mb-8">
+      <div className="mb-6 -mx-1 flex gap-2 overflow-x-auto px-1 pb-1 sm:mb-8 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0">
         <button
           onClick={() => handleCategoryChange("")}
-          className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+          className={`shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
             !selectedCategory ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:bg-muted/80"
           }`}
           suppressHydrationWarning
@@ -167,7 +170,7 @@ function ShopPage() {
           <button
             key={cat.id}
             onClick={() => handleCategoryChange(cat.id)}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+            className={`shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
               selectedCategory === cat.id ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:bg-muted/80"
             }`}
             suppressHydrationWarning
@@ -186,11 +189,11 @@ function ShopPage() {
       )}
 
       {/* Results count */}
-      <p className="text-sm text-muted-foreground mb-6">{filtered.length} product{filtered.length !== 1 ? "s" : ""} found</p>
+      <p className="mb-5 text-sm text-muted-foreground sm:mb-6">{filtered.length} product{filtered.length !== 1 ? "s" : ""} found</p>
 
       {/* Grid */}
       {filtered.length > 0 ? (
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 min-[430px]:grid-cols-2 sm:gap-5 lg:grid-cols-3 xl:grid-cols-4">
           {filtered.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}

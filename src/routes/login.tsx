@@ -1,7 +1,6 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { loginUser } from "@/lib/api";
-import logoUrl from "../../logo.png";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -14,7 +13,7 @@ export const Route = createFileRoute("/login")({
 });
 
 function LoginPage() {
-  const navigate = useNavigate();
+  const navigate = Route.useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -42,6 +41,24 @@ function LoginPage() {
     }
   };
 
+  const handleDemoLogin = async () => {
+    setError("");
+    setIsLoading(true);
+    try {
+      const demoEmail = "alex123@gmail.com";
+      const demoPassword = "12345678";
+      setEmail(demoEmail);
+      setPassword(demoPassword);
+      const user = await loginUser({ email: demoEmail, password: demoPassword });
+      localStorage.setItem("snapcart_currentUser", JSON.stringify({ email: user.email, name: user.name }));
+      navigate({ to: "/" });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to connect to demo account");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="flex min-h-[70vh] items-start justify-center px-4 py-8 sm:items-center sm:py-12">
       <div className="w-full max-w-sm animate-scale-in">
@@ -62,8 +79,31 @@ function LoginPage() {
                 100% { background-position: 0% 50%; }
               }
             `}</style>
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl bg-primary/10 ring-1 ring-border/60 shadow-lg shadow-primary/20">
-              <img src={logoUrl} alt="SnapCart logo" className="h-full w-full object-contain p-2" />
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 ring-1 ring-primary/25 shadow-lg shadow-primary/10 transition-transform duration-500 hover:scale-105">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-10 w-10">
+                <defs>
+                  <linearGradient id="logo-gradient-login" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="var(--primary)" />
+                    <stop offset="100%" stopColor="var(--secondary)" />
+                  </linearGradient>
+                </defs>
+                <path
+                  d="M3 3H5L6.6 10.4C6.72 10.9 7.15 11.25 7.66 11.25H16.5C17.01 11.25 17.44 10.9 17.56 10.4L19.2 4H6.2"
+                  stroke="url(#logo-gradient-login)"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <circle cx="8.5" cy="18.5" r="1.8" fill="url(#logo-gradient-login)" />
+                <circle cx="15.5" cy="18.5" r="1.8" fill="url(#logo-gradient-login)" />
+                <path
+                  d="M13 5L10.5 8.5H13.5L11 12"
+                  stroke="url(#logo-gradient-login)"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </div>
             <h1 className="text-2xl font-bold text-foreground">Welcome back</h1>
             <p className="mt-1 text-sm text-muted-foreground">Sign in to your SnapCart account</p>
@@ -106,6 +146,27 @@ function LoginPage() {
               {isLoading ? "Signing in..." : "Sign In"}
             </button>
           </form>
+
+          <div className="mt-6 border-t border-border pt-5">
+            <div className="rounded-2xl bg-muted/40 p-4 border border-border/50">
+              <p className="text-xs font-bold text-foreground mb-1 flex items-center gap-1.5 font-heading">
+                <span className="inline-block h-2 w-2 rounded-full bg-primary animate-pulse" />
+                Quick Sandbox Demo Access
+              </p>
+              <p className="text-[11px] text-muted-foreground mb-3 leading-normal">
+                Click below to instantly log in using our pre-seeded developer test credentials.
+              </p>
+              <button
+                type="button"
+                onClick={handleDemoLogin}
+                disabled={isLoading}
+                className="w-full rounded-xl border border-primary/20 bg-primary/5 py-2 text-xs font-semibold text-primary hover:bg-primary/10 transition-all active:scale-[0.98] disabled:opacity-50"
+                suppressHydrationWarning
+              >
+                One-Click Demo Login
+              </button>
+            </div>
+          </div>
 
           <p className="mt-6 text-center text-sm text-muted-foreground">
             Don't have an account?{" "}

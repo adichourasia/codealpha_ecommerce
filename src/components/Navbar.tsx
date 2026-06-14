@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { MoonStar, SunMedium } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useTheme } from "@/context/ThemeContext";
-import logoUrl from "../../logo.png";
 
 export function Navbar() {
   const { totalItems, isAnimating } = useCart();
@@ -53,11 +52,34 @@ export function Navbar() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex min-h-16 flex-wrap items-center justify-between gap-3 py-3 md:h-16 md:flex-nowrap md:py-0">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg bg-primary/10 ring-1 ring-border/60">
-              <img src={logoUrl} alt="SnapCart logo" className="h-full w-full object-contain p-1" />
+          <Link to="/" className="flex items-center gap-2 group">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 ring-1 ring-primary/20 shadow-md shadow-primary/5 transition-transform duration-300 group-hover:scale-105">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-5.5 w-5.5">
+                <defs>
+                  <linearGradient id="logo-gradient-nav" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="var(--primary)" />
+                    <stop offset="100%" stopColor="var(--secondary)" />
+                  </linearGradient>
+                </defs>
+                <path
+                  d="M3 3H5L6.6 10.4C6.72 10.9 7.15 11.25 7.66 11.25H16.5C17.01 11.25 17.44 10.9 17.56 10.4L19.2 4H6.2"
+                  stroke="url(#logo-gradient-nav)"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <circle cx="8.5" cy="18.5" r="1.8" fill="url(#logo-gradient-nav)" />
+                <circle cx="15.5" cy="18.5" r="1.8" fill="url(#logo-gradient-nav)" />
+                <path
+                  d="M13 5L10.5 8.5H13.5L11 12"
+                  stroke="url(#logo-gradient-nav)"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </div>
-            <span className="text-xl font-bold tracking-tight text-foreground">SnapCart</span>
+            <span className="text-xl font-bold tracking-tight text-foreground transition-colors group-hover:text-primary">SnapCart</span>
           </Link>
 
           {/* Desktop nav */}

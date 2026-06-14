@@ -7,7 +7,28 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 import { nitro } from "nitro/vite";
 
+const isBuild = process.argv.includes("build") || process.env.NODE_ENV === "production";
+
 export default defineConfig({
+	vite: {
+		publicDir: "public",
+		server: {
+			proxy: {
+				"/api": {
+					target: "http://localhost:4000",
+					changeOrigin: true,
+				},
+			},
+		},
+		environments: {
+			ssr: {
+				optimizeDeps: {
+					include: ["react-dom/server"],
+				},
+			},
+		},
+	},
 	cloudflare: false,
-	plugins: [nitro({ preset: "vercel" })],
+	plugins: isBuild ? [nitro({ preset: "vercel" })] : [],
 });
+

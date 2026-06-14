@@ -2,10 +2,52 @@
   "users": [
     {
       "id": "90f84723-e7eb-4356-ae1c-e8bbf595aefb",
-      "name": "biswajit nayak",
-      "email": "biswajit123@gmail.com",
+      "name": "Alex Rivera",
+      "email": "alex123@gmail.com",
       "passwordHash": "ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f",
       "createdAt": "2026-04-17T16:36:36.306Z"
+    },
+    {
+      "id": "cabb6e89-3123-4437-a589-c29253dd7c76",
+      "name": "naman kumar",
+      "email": "naman123@gmail.com",
+      "passwordHash": "ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f",
+      "createdAt": "2026-04-18T04:28:23.826Z"
+    },
+    {
+      "id": "cf66f3e3-92dc-4506-ba82-a273e756be24",
+      "name": "sarthak dubey",
+      "email": "sarthak123@gmail.com",
+      "passwordHash": "ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f",
+      "createdAt": "2026-04-18T04:29:50.288Z"
+    },
+    {
+      "id": "6610e76c-b417-4938-9372-319c9cada4b9",
+      "name": "Alex Sandbox",
+      "email": "aditya_demoalex123@gmail.com",
+      "passwordHash": "a929d2722166caf4af2a43747fe522d0409e79f5a1dc07325b9664c6b926d20f",
+      "createdAt": "2026-06-10T05:33:21.303Z"
+    },
+    {
+      "id": "339aec48-e7af-4c4a-a57f-deedb5cd3269",
+      "name": "aditya chourasia",
+      "email": "aadi1234@gmail.com",
+      "passwordHash": "c775e7b757ede630cd0aa1113bd102661ab38829ca52a6422ab782862f268646",
+      "createdAt": "2026-06-11T12:00:27.284Z"
+    },
+    {
+      "id": "ea3ce8ce-461c-44ce-a946-7823ce1ac7c2",
+      "name": "Aditya Chourasia",
+      "email": "adityachourasia716@gmail.com",
+      "passwordHash": "0f7bfe6859999fd0ee6e4a7b725d466cebebec7ca75ddd7ef0f2e6d648db6d8f",
+      "createdAt": "2026-06-12T10:00:07.170Z"
+    },
+    {
+      "id": "394ee290-9695-475f-b7e5-efb2c8d52813",
+      "name": "john carl",
+      "email": "john123@gmail.com",
+      "passwordHash": "c775e7b757ede630cd0aa1113bd102661ab38829ca52a6422ab782862f268646",
+      "createdAt": "2026-06-14T15:54:32.925Z"
     }
   ],
   "products": [
@@ -132,7 +174,7 @@
       "price": 4499,
       "description": "Modern LED desk lamp with adjustable color temperature (3000K-6500K) and brightness levels. Touch controls, USB charging port, and flexible gooseneck design. Energy-efficient and eye-friendly.",
       "shortDescription": "Adjustable LED lamp with USB charging",
-      "image": "https://images.unsplash.com/photo-1507473885765-e6ed057ab6fe?w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=600&q=80",
       "category": "home",
       "stock": 30,
       "rating": 4.7,
@@ -169,8 +211,8 @@
       "id": "01cf7663-389b-48bc-aca2-53a2e70b54ae",
       "orderNumber": "SC-HTQTDX",
       "user": {
-        "name": "biswajit nayak",
-        "email": "biswajit123@gmail.com"
+        "name": "Alex Rivera",
+        "email": "alex123@gmail.com"
       },
       "items": [
         {
@@ -182,7 +224,7 @@
         }
       ],
       "shippingAddress": {
-        "name": "biswajit",
+        "name": "Alex",
         "phone": "8795937588",
         "address": "saddu raipu cg",
         "city": "raipur",
@@ -198,8 +240,8 @@
       "id": "da3417a8-c7f0-44a6-bc72-df691b978122",
       "orderNumber": "SC-FPDN2R",
       "user": {
-        "name": "biswajit nayak",
-        "email": "biswajit123@gmail.com"
+        "name": "Alex Rivera",
+        "email": "alex123@gmail.com"
       },
       "items": [
         {
@@ -222,6 +264,64 @@
       "total": 19999,
       "status": "placed",
       "createdAt": "2026-04-17T16:40:12.528Z"
+    },
+    {
+      "id": "4e8fa5fc-25ec-41b5-8bfe-dd7db54a304b",
+      "orderNumber": "SC-X3VL8M",
+      "user": {
+        "name": "Alex Sandbox",
+        "email": "aditya_demoalex123@gmail.com"
+      },
+      "items": [
+        {
+          "productId": "1",
+          "name": "Wireless Noise-Cancelling Headphones",
+          "price": 19999,
+          "quantity": 2,
+          "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&q=80"
+        }
+      ],
+      "shippingAddress": {
+        "name": "Alex Sandbox",
+        "phone": "8795937588",
+        "address": "Saddu Raipur CG",
+        "city": "Raipur",
+        "pincode": "492001"
+      },
+      "shipping": 0,
+      "subtotal": 39998,
+      "total": 39998,
+      "status": "placed",
+      "createdAt": "2026-06-10T05:35:40.491Z"
+    },
+    {
+      "id": "85a933c5-0d1e-4ce6-b5e7-6fd360da8681",
+      "orderNumber": "SC-TH2NCJ",
+      "user": {
+        "name": "john carl",
+        "email": "john123@gmail.com"
+      },
+      "items": [
+        {
+          "productId": "1",
+          "name": "Wireless Noise-Cancelling Headphones",
+          "price": 19999,
+          "quantity": 1,
+          "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&q=80"
+        }
+      ],
+      "shippingAddress": {
+        "name": "john doe",
+        "phone": "1234567890",
+        "address": "raipur",
+        "city": "raipur",
+        "pincode": "492001"
+      },
+      "shipping": 0,
+      "subtotal": 19999,
+      "total": 19999,
+      "status": "placed",
+      "createdAt": "2026-06-14T15:55:32.533Z"
     }
   ]
 }

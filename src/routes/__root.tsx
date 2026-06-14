@@ -5,6 +5,7 @@ import { CartProvider } from "@/context/CartContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { MobileInstallPrompt } from "@/components/MobileInstallPrompt";
 
 import appCss from "../styles.css?url";
 import logoUrl from "../../logo.png";
@@ -36,6 +37,11 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "theme-color", content: "#d946ef" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "default" },
+      { name: "apple-mobile-web-app-title", content: "SnapCart" },
       { title: "SnapCart — Premium Online Store" },
       { name: "description", content: "Discover premium products at SnapCart. Shop electronics, fashion, accessories & more with fast shipping and easy returns." },
       { property: "og:title", content: "SnapCart — Premium Online Store" },
@@ -46,9 +52,11 @@ export const Route = createRootRoute({
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: logoUrl, type: "image/png" },
       { rel: "shortcut icon", href: logoUrl, type: "image/png" },
+      { rel: "apple-touch-icon", href: logoUrl },
+      { rel: "manifest", href: "/manifest.webmanifest" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap" },
     ],
   }),
   shellComponent: RootShell,
@@ -98,6 +106,33 @@ function RootComponent() {
     };
   }, []);
 
+  useEffect(() => {
+    if (typeof window === "undefined" || !("serviceWorker" in navigator)) return;
+
+    const handleServiceWorker = async () => {
+      try {
+        if (import.meta.env.DEV) {
+          // Unregister any active service worker during development to avoid stale caching
+          const registrations = await navigator.serviceWorker.getRegistrations();
+          for (const registration of registrations) {
+            await registration.unregister();
+          }
+          // Clear any stored Cache Storage
+          const cacheKeys = await window.caches.keys();
+          for (const key of cacheKeys) {
+            await window.caches.delete(key);
+          }
+        } else {
+          await navigator.serviceWorker.register("/sw.js");
+        }
+      } catch {
+        // Service worker failures should not break page rendering.
+      }
+    };
+
+    void handleServiceWorker();
+  }, []);
+
   return (
     <ThemeProvider>
       <CartProvider>
@@ -107,6 +142,7 @@ function RootComponent() {
             <Outlet />
           </main>
           {!isLoginOrRegister && <Footer />}
+          {!isLoginOrRegister && <MobileInstallPrompt />}
         </div>
       </CartProvider>
     </ThemeProvider>

@@ -59,6 +59,22 @@ function ProductDetailPage() {
         );
       } catch (err) {
         if (!active) return;
+
+        // Keep product detail usable on mobile/network-constrained sessions.
+        const localProducts = (await import("@/data/products")).products;
+        const fallbackProduct = localProducts.find((item) => item.id === productId) ?? null;
+
+        if (fallbackProduct) {
+          setProduct(fallbackProduct);
+          setRelated(
+            localProducts
+              .filter((item) => item.category === fallbackProduct.category && item.id !== fallbackProduct.id)
+              .slice(0, 4)
+          );
+          setError("Live product service is unavailable. Showing cached product data.");
+          return;
+        }
+
         setError(err instanceof Error ? err.message : "Unable to load product");
       } finally {
         if (active) setLoading(false);

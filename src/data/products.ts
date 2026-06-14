@@ -151,7 +151,7 @@ export const products: Product[] = [
     price: 4499,
     description: "Modern LED desk lamp with adjustable color temperature (3000K-6500K) and brightness levels. Touch controls, USB charging port, and flexible gooseneck design. Energy-efficient and eye-friendly.",
     shortDescription: "Adjustable LED lamp with USB charging",
-    image: "https://images.unsplash.com/photo-1507473885765-e6ed057ab6fe?w=600&q=80",
+    image: "https://images.unsplash.com/photo-1517999144091-3d9dca6d1e43?w=600&q=80",
     category: "home",
     stock: 30,
     rating: 4.7,
