@@ -36,17 +36,30 @@ const API_BASE_URLS = getFallbackBaseUrls();
 async function requestWithBaseUrl<T>(baseUrl: string, path: string, init?: RequestInit) {
   const url = `${baseUrl}${path}`;
 
-  const response = await fetch(url, {
-    headers: {
-      "Content-Type": "application/json",
-      ...(init?.headers || {}),
-    },
-    ...init,
-  });
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 2000); // 2-second fail-fast timeout
 
-  const payload = await response.json().catch(() => null);
+  try {
+    const response = await fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+        ...(init?.headers || {}),
+      },
+      ...init,
+      signal: controller.signal,
+    });
+    clearTimeout(timeoutId);
 
-  return { response, payload, url } as const;
+    const payload = await response.json().catch(() => null);
+
+    return { response, payload, url } as const;
+  } catch (error: any) {
+    clearTimeout(timeoutId);
+    if (error?.name === "AbortError") {
+      throw new TypeError("Failed to fetch (timeout)");
+    }
+    throw error;
+  }
 }
 
 export interface AuthUser {

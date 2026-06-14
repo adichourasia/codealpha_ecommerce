@@ -17,6 +17,8 @@ export default defineConfig({
 				"/api": {
 					target: "http://localhost:4000",
 					changeOrigin: true,
+					timeout: 1000,
+					proxyTimeout: 1000,
 				},
 			},
 		},
