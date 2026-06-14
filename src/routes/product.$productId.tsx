@@ -96,7 +96,7 @@ function ProductDetailPage() {
     );
   }
 
-  if (error || !product) {
+  if (!product) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
         <div className="text-center">
@@ -117,6 +117,12 @@ function ProductDetailPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+      {error && (
+        <div className="mb-6 rounded-xl border border-amber-500/20 bg-amber-500/10 p-3.5 text-sm text-amber-600 dark:text-amber-400 animate-scale-in">
+          ⚠️ {error}
+        </div>
+      )}
+
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm text-muted-foreground mb-8">
         <Link to="/" className="hover:text-primary transition-colors">Home</Link>
