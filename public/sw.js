@@ -29,7 +29,6 @@ self.addEventListener("fetch", (event) => {
 
   // Always keep API calls network-first to avoid stale commerce data.
   if (requestUrl.pathname.startsWith("/api/")) {
-    event.respondWith(fetch(event.request));
     return;
   }
 

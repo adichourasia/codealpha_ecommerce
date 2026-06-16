@@ -101,17 +101,6 @@ export function Navbar() {
 
           {/* Right side */}
           <div className="order-2 flex items-center gap-2 sm:gap-3 md:order-none">
-            <button
-              type="button"
-              onClick={toggleTheme}
-              className="inline-flex h-10 items-center gap-2 rounded-lg border border-border bg-card px-3 text-sm font-medium text-foreground transition-colors hover:bg-muted"
-              aria-label={`Switch to ${isDark ? "light" : "dark"} theme`}
-              suppressHydrationWarning
-            >
-              {isDark ? <SunMedium className="h-4 w-4" /> : <MoonStar className="h-4 w-4" />}
-              <span className="hidden sm:inline">{isDark ? "Light" : "Dark"}</span>
-            </button>
-
             {/* Cart icon */}
             <Link
               to="/cart"
@@ -130,6 +119,18 @@ export function Navbar() {
                 </span>
               )}
             </Link>
+
+            {/* Dark/Light Mode Button */}
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="inline-flex h-10 items-center gap-2 rounded-lg border border-border bg-card px-3 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+              aria-label={`Switch to ${isDark ? "light" : "dark"} theme`}
+              suppressHydrationWarning
+            >
+              {isDark ? <SunMedium className="h-4 w-4" /> : <MoonStar className="h-4 w-4" />}
+              <span className="hidden sm:inline">{isDark ? "Light" : "Dark"}</span>
+            </button>
 
             {/* Login */}
             {currentUser ? (
